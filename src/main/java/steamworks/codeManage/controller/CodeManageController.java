@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import steamworks.codeManage.domain.model.CodeChildrenModel;
 import steamworks.codeManage.domain.model.CodeModel;
 import steamworks.codeManage.domain.model.form.CreateCodeForm;
 import steamworks.codeManage.domain.model.form.UpdateCodeForm;
 import steamworks.codeManage.domain.request.DeleteCodeRequest;
+import steamworks.codeManage.domain.response.CodeChildrenResponse;
 import steamworks.codeManage.domain.response.CodeListResponse;
 import steamworks.codeManage.domain.response.CodeResponse;
 import steamworks.codeManage.service.CodeService;
@@ -28,6 +30,12 @@ public class CodeManageController {
     public ResponseEntity<CodeListResponse> getCodes() {
         List<CodeModel> codes = codeService.getAllCodes();
         return ResponseEntity.ok(new CodeListResponse(codes));
+    }
+
+    @PostMapping("/code:LIST_CHILDREN")
+    public ResponseEntity<CodeChildrenResponse> getCodeChildrenHierarchy() {
+        List<CodeChildrenModel> codes = codeService.getChildrenHierarchyCodes();
+        return ResponseEntity.ok(new CodeChildrenResponse(codes));
     }
 
     @PostMapping("/code:UPDATE")
