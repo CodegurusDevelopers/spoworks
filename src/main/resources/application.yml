@@ -1,12 +1,12 @@
 server:
-  port: 8080
+  port: 8089
 
 spring:
   datasource:
-    url: jdbc:mysql://nas.codegurus.co.kr:28336/steamworks
+    url: jdbc:mariadb://nas.codegurus.co.kr:28336/steamworks
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: test12!@QW
   jpa:
     show-sql: true
-logging.level.org.hibernate.type.descriptor.sql: trace
+#logging.level.org.hibernate.type.descriptor.sql: trace
