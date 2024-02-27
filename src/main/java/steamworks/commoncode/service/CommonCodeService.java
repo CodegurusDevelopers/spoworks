@@ -1,15 +1,24 @@
 package steamworks.commoncode.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import steamworks.codeManage.domain.converter.CodeConverter;
+import steamworks.codeManage.domain.model.CodeModel;
+import steamworks.codeManage.domain.model.form.CreateCodeForm;
+import steamworks.codeManage.entity.Code;
 import steamworks.commoncode.domain.CommonCodeMappingModel;
 import steamworks.commoncode.domain.CommonCodeModel;
+import steamworks.commoncode.domain.CreateCommonCodeForm;
+import steamworks.commoncode.entity.CommonCode;
+import steamworks.commoncode.entity.CommonCodeMapping;
 import steamworks.commoncode.repository.CommonCodeMappingRepository;
 import steamworks.commoncode.repository.CommonCodeRepository;
 
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CommonCodeService {
@@ -56,7 +65,7 @@ public class CommonCodeService {
                 .filter(e -> !e.getHasParent())
                 .collect(Collectors.toList())
                 .stream()
-                .sorted(Comparator.comparing(CommonCodeModel::getOrder))
+                .sorted(Comparator.comparing(CommonCodeModel::getOrd))
                 .collect(Collectors.toList());
 
         List<CommonCodeModel> total = new ArrayList<>();
@@ -80,4 +89,46 @@ public class CommonCodeService {
 
         }
     }
+    private Timestamp now() {
+        return new Timestamp(new Date().getTime());
+    }
+
+    /**
+     * creatorId는 jwt에서 도출.
+     * @param form
+     * @return
+     */
+    public CommonCodeModel createCommonCode(CreateCommonCodeForm form) {
+        CommonCode newCode = CommonCode.builder()
+                .cd(form.getCd())
+                .cdNm(form.getCdNm())
+                .cdEn(form.getCdEn())
+                .cdJp(form.getCdJp())
+                .cdCn(form.getCdCn())
+                .activateYn(form.getActivateYn())
+                .creatorId(form.getCreatorId())
+                .createdDatentime(now())
+                .ord(form.getOrd())
+                .build();
+
+        CommonCode commonCode = commonCodeRepository.save(newCode);
+        List<CommonCodeMapping> mappings = new ArrayList<>();
+        List<Long> list = form.getParents();
+        int order = 1;
+        for (Long l : list) {
+            CommonCodeMapping commonCodeMapping = new CommonCodeMapping();
+            commonCodeMapping.setCreatorId(form.getCreatorId());
+            commonCodeMapping.setCreatedDatentime(now());
+            commonCodeMapping.setOrd(order++);
+            commonCodeMapping.setChildId(commonCode.getCommCdId());
+            commonCodeMapping.setParentsId(l);
+            mappings.add(commonCodeMapping);
+
+        }
+
+        commonCodeMappingRepository.saveAll(mappings);
+
+        return CommonCodeConverter.from(commonCode);
+    }
+
 }

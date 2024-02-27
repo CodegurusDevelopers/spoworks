@@ -2,6 +2,7 @@ package steamworks.commoncode.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@ToString
 @SuperBuilder
 public class CommonCodeMappingModel {
     Long commCdMappingId;
@@ -18,13 +20,13 @@ public class CommonCodeMappingModel {
 
     Long parentsId;
 
-    Integer order;
+    Integer ord;
 
-    String creatorId;
+    Long creatorId;
 
     Timestamp createdDatentime;
 
-    String modifierId;
+    Long modifierId;
 
     Timestamp modifyDatentime;
 

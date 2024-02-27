@@ -1,18 +1,18 @@
 package steamworks.commoncode.entity;
 
 import lombok.*;
-import steamworks.core.entity.BaseTimestampEntity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table
+@Table(name = "COMM_CD")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class CommonCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +25,16 @@ public class CommonCode {
     String cdNm;
 
     @Column
-    Integer order;
+    Integer ord;
 
     @Column
-    String creatorId;
+    Long creatorId;
 
     @Column
     Timestamp createdDatentime;
 
     @Column
-    String modifierId;
+    Long modifierId;
 
     @Column
     Timestamp modifyDatentime;

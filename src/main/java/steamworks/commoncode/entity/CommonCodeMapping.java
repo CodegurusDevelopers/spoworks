@@ -6,12 +6,13 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table
+@Table(name = "COMM_CD_MAPPING")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class CommonCodeMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,16 +25,16 @@ public class CommonCodeMapping {
     Long parentsId;
 
     @Column
-    Integer order;
+    Integer ord;
 
     @Column
-    String creatorId;
+    Long creatorId;
 
     @Column
     Timestamp createdDatentime;
 
     @Column
-    String modifierId;
+    Long modifierId;
 
     @Column
     Timestamp modifyDatentime;

@@ -1,8 +1,10 @@
 package steamworks.commoncode.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
+@ToString
 public class CommonCodeModel implements Cloneable{
     Long commCdId;
 
@@ -20,13 +23,13 @@ public class CommonCodeModel implements Cloneable{
 
     String cdNm;
 
-    Integer order;
+    Integer ord;
 
-    String creatorId;
+    Long creatorId;
 
     Timestamp createdDatentime;
 
-    String modifierId;
+    Long modifierId;
 
     Timestamp modifyDatentime;
 
@@ -37,13 +40,14 @@ public class CommonCodeModel implements Cloneable{
     String cdJp;
     // 코드 중국어
     String cdCn;
-
+    @JsonIgnore
+    @Builder.Default
+    Boolean hasParent = false;
 
     List<CommonCodeModel> children;
 
 
-    @Builder.Default
-    Boolean hasParent = false;
+
 
     public void add(CommonCodeModel child) {
         if (children == null) {
