@@ -1,12 +1,48 @@
 server:
   port: 8089
+  address: 192.168.50.217
 
 spring:
   datasource:
+#    url: jdbc:p6spy:mariadb://nas.codegurus.co.kr:28336/steamworks
     url: jdbc:mariadb://nas.codegurus.co.kr:28336/steamworks
     driver-class-name: org.mariadb.jdbc.Driver
+#    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     username: root
     password: test12!@QW
   jpa:
-    show-sql: true
-#logging.level.org.hibernate.type.descriptor.sql: trace
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
+        use-new-id-generator-mappings: false
+  decorator:
+    datasource:
+      p6spy: # 파라미터 바인딩된 쿼리로그 출력을 위한 설정
+        enable-logging: true
+        multiline: true
+        logging: sysout
+
+
+logging:
+  level:
+    p6spy: debug
+#    org.hibernate.SQL: debug
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql: debug
+
+
+
+jwt:
+  secret-key: B83BD3B9657FF58D5ADC2A7F2B1FF51EB7E93A1495AEBB5EA128CDACF4
+  algorithm: HS256
