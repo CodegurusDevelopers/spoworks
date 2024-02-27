@@ -6,29 +6,30 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "MSG_MANAGE")
+@Table(name = "SETTING_MANAGE")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class MsgBundle {
+public class SettingManage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long msgManageId;
+    Long settingManageId;
 
     @Column
-    String msgCd;
+    String settingCd;
     @Column
-    String msgEn;
-
+    String settingValue;
     @Column
-    String msgJp;
+    String settingMessage;
     @Column
-    String msgCn;
+    String settingMessageEn;
     @Column
-    String msg;
+    String settingMessageJp;
+    @Column
+    String settingMessageCn;
     @Column
     String activateYn;
     @Column

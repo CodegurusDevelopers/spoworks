@@ -7,13 +7,15 @@ import steamworks.codeManage.domain.converter.CodeConverter;
 import steamworks.codeManage.domain.model.CodeModel;
 import steamworks.codeManage.domain.model.form.CreateCodeForm;
 import steamworks.codeManage.entity.Code;
-import steamworks.commoncode.domain.CommonCodeMappingModel;
-import steamworks.commoncode.domain.CommonCodeModel;
-import steamworks.commoncode.domain.CreateCommonCodeForm;
+import steamworks.commoncode.domain.*;
 import steamworks.commoncode.entity.CommonCode;
 import steamworks.commoncode.entity.CommonCodeMapping;
+import steamworks.commoncode.entity.MsgBundle;
+import steamworks.commoncode.entity.SettingManage;
 import steamworks.commoncode.repository.CommonCodeMappingRepository;
 import steamworks.commoncode.repository.CommonCodeRepository;
+import steamworks.commoncode.repository.MsgBundleRepository;
+import steamworks.commoncode.repository.SettingManageRepository;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -25,6 +27,8 @@ public class CommonCodeService {
 
     private CommonCodeRepository commonCodeRepository;
     private CommonCodeMappingRepository commonCodeMappingRepository;
+    private MsgBundleRepository msgBundleRepository;
+    private SettingManageRepository settingManageRepository;
     private List<CommonCodeModel> getCommonCodes() {
         return commonCodeRepository.findAll().stream()
                 .map(CommonCodeConverter::from)
@@ -131,4 +135,70 @@ public class CommonCodeService {
         return CommonCodeConverter.from(commonCode);
     }
 
+
+    public List<MsgBundleModel> findMsgBundles() {
+        List<MsgBundleModel> msgBundleModels = getMsgBundles();
+        for (MsgBundleModel model : msgBundleModels) {
+            CommonCode code = commonCodeRepository.findByCommCdId(model.getCommCdId());
+            model.setCdNm(code.getCdNm());
+        }
+
+        return msgBundleModels;
+    }
+
+    private List<MsgBundleModel> getMsgBundles() {
+        return msgBundleRepository.findAll().stream()
+                .map(CommonCodeConverter::fromMsgBungle)
+                .collect(Collectors.toList());
+    }
+
+    public MsgBundleModel createMsgBundle(CreateMsgBundleForm form) {
+
+        MsgBundle msgBundle = MsgBundle.builder()
+                .msgCd(form.getMsgCd())
+                .msg(form.getMsg())
+                .msgEn(form.getMsgEn())
+                .msgJp(form.getMsgJp())
+                .msgCn(form.getMsgCn())
+                .activateYn(form.getActivateYn())
+                .creatorId(99999l)  // FIXME
+                .createdDatentime(now())
+                .commCdId(form.getCommCdId())
+                .build();
+
+        MsgBundle bundle = msgBundleRepository.save(msgBundle);
+        return CommonCodeConverter.fromMsgBungle(bundle);
+    }
+
+    public List<SettingManageModel> findSettingManages() {
+        List<SettingManageModel> settingManageModels = getSettingManages();
+        for (SettingManageModel model : settingManageModels) {
+            CommonCode code = commonCodeRepository.findByCommCdId(model.getCommCdId());
+            model.setCdNm(code.getCdNm());
+        }
+
+        return settingManageModels;
+    }
+    private List<SettingManageModel> getSettingManages() {
+        return settingManageRepository.findAll().stream()
+                .map(CommonCodeConverter::fromSettingManage)
+                .collect(Collectors.toList());
+    }
+    public SettingManageModel createSettingManage(CreateSettingManageForm it) {
+        SettingManage settingManage = SettingManage.builder()
+                .settingCd(it.settingCd)
+                .settingValue(it.settingValue)
+                .settingMessage(it.settingMessage)
+                .settingMessageEn(it.settingMessageEn)
+                .settingMessageJp(it.settingMessageJp)
+                .settingMessageCn(it.settingMessageCn)
+                .activateYn(it.activateYn)
+                .creatorId(99999l)  // FIXME
+                .createdDatentime(now())
+                .commCdId(it.commCdId)
+                .build();
+
+        SettingManage settingManage1 = settingManageRepository.save(settingManage);
+        return CommonCodeConverter.fromSettingManage(settingManage1);
+    }
 }

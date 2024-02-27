@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import steamworks.codeManage.domain.model.CodeModel;
 import steamworks.codeManage.domain.model.form.CreateCodeForm;
 import steamworks.codeManage.domain.response.CodeResponse;
-import steamworks.commoncode.domain.CommonCodeListResponse;
-import steamworks.commoncode.domain.CommonCodeModel;
-import steamworks.commoncode.domain.CommonCodeResponse;
-import steamworks.commoncode.domain.CreateCommonCodeForm;
+import steamworks.commoncode.domain.*;
+import steamworks.commoncode.entity.MsgBundle;
+import steamworks.commoncode.entity.SettingManage;
 import steamworks.commoncode.service.CommonCodeService;
 
 import javax.validation.Valid;
@@ -41,5 +40,28 @@ public class CommonCodeController {
     public ResponseEntity<CommonCodeResponse> registryCode(@Valid @RequestBody CreateCommonCodeForm form) {
         CommonCodeModel code = commonCodeService.createCommonCode(form);
         return ResponseEntity.ok(new CommonCodeResponse(code));
+    }
+
+
+    @GetMapping("/msgBundle:LIST")
+    public ResponseEntity<MsgBundleLsitListResponse> getMsgBundles() {
+        List<MsgBundleModel> codes = commonCodeService.findMsgBundles();
+        return ResponseEntity.ok(new MsgBundleLsitListResponse(codes));
+    }
+    @PostMapping("/msgBundle:REGISTRY")
+    public ResponseEntity<MsgBundleResponse> registryCode(@Valid @RequestBody CreateMsgBundleForm form) {
+        MsgBundleModel code = commonCodeService.createMsgBundle(form);
+        return ResponseEntity.ok(new MsgBundleResponse(code));
+    }
+
+    @GetMapping("/settingManage:LIST")
+    public ResponseEntity<SettingManageListResponse> getSettingManages() {
+        List<SettingManageModel> codes = commonCodeService.findSettingManages();
+        return ResponseEntity.ok(new SettingManageListResponse(codes));
+    }
+    @PostMapping("/settingManage:REGISTRY")
+    public ResponseEntity<SettingManageResponse> registryCode(@Valid @RequestBody CreateSettingManageForm form) {
+        SettingManageModel code = commonCodeService.createSettingManage(form);
+        return ResponseEntity.ok(new SettingManageResponse(code));
     }
 }
