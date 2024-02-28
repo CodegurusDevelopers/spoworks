@@ -6,12 +6,8 @@ import org.springframework.stereotype.Service;
 import steamworks.commoncode.domain.*;
 import steamworks.commoncode.entity.CommonCode;
 import steamworks.commoncode.entity.CommonCodeMapping;
-import steamworks.commoncode.entity.MsgManage;
-import steamworks.commoncode.entity.SettingManage;
 import steamworks.commoncode.repository.CommonCodeMappingRepository;
 import steamworks.commoncode.repository.CommonCodeRepository;
-import steamworks.commoncode.repository.MsgManageRepository;
-import steamworks.commoncode.repository.SettingManageRepository;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -23,8 +19,6 @@ public class CommonCodeService {
 
     private CommonCodeRepository commonCodeRepository;
     private CommonCodeMappingRepository commonCodeMappingRepository;
-    private MsgManageRepository msgManageRepository;
-    private SettingManageRepository settingManageRepository;
     private List<CommonCodeModel> getCommonCodes() {
         return commonCodeRepository.findAll().stream()
                 .map(CommonCodeConverter::from)
@@ -132,69 +126,5 @@ public class CommonCodeService {
     }
 
 
-    public List<MsgManageModel> findMsgManages() {
-        List<MsgManageModel> msgManageModels = getMsgManages();
-        for (MsgManageModel model : msgManageModels) {
-            CommonCode code = commonCodeRepository.findByCommCdId(model.getCommCdId());
-            model.setCdNm(code.getCdNm());
-        }
 
-        return msgManageModels;
-    }
-
-    private List<MsgManageModel> getMsgManages() {
-        return msgManageRepository.findAll().stream()
-                .map(CommonCodeConverter::fromMsgBungle)
-                .collect(Collectors.toList());
-    }
-
-    public MsgManageModel createMsgManage(CreateMsgManageForm form) {
-
-        MsgManage msgManage = MsgManage.builder()
-                .msgCd(form.getMsgCd())
-                .msg(form.getMsg())
-                .msgEn(form.getMsgEn())
-                .msgJp(form.getMsgJp())
-                .msgCn(form.getMsgCn())
-                .activateYn(form.getActivateYn())
-                .creatorId(99999l)  // FIXME
-                .createdDatentime(now())
-                .commCdId(form.getCommCdId())
-                .build();
-
-        MsgManage bundle = msgManageRepository.save(msgManage);
-        return CommonCodeConverter.fromMsgBungle(bundle);
-    }
-
-    public List<SettingManageModel> findSettingManages() {
-        List<SettingManageModel> settingManageModels = getSettingManages();
-        for (SettingManageModel model : settingManageModels) {
-            CommonCode code = commonCodeRepository.findByCommCdId(model.getCommCdId());
-            model.setCdNm(code.getCdNm());
-        }
-
-        return settingManageModels;
-    }
-    private List<SettingManageModel> getSettingManages() {
-        return settingManageRepository.findAll().stream()
-                .map(CommonCodeConverter::fromSettingManage)
-                .collect(Collectors.toList());
-    }
-    public SettingManageModel createSettingManage(CreateSettingManageForm it) {
-        SettingManage settingManage = SettingManage.builder()
-                .settingCd(it.settingCd)
-                .settingValue(it.settingValue)
-                .settingMessage(it.settingMessage)
-                .settingMessageEn(it.settingMessageEn)
-                .settingMessageJp(it.settingMessageJp)
-                .settingMessageCn(it.settingMessageCn)
-                .activateYn(it.activateYn)
-                .creatorId(99999l)  // FIXME
-                .createdDatentime(now())
-                .commCdId(it.commCdId)
-                .build();
-
-        SettingManage settingManage1 = settingManageRepository.save(settingManage);
-        return CommonCodeConverter.fromSettingManage(settingManage1);
-    }
 }
