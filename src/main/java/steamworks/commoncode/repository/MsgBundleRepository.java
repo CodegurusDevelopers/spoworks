@@ -7,4 +7,5 @@ import steamworks.commoncode.entity.MsgBundle;
 
 @Repository
 public interface MsgBundleRepository extends JpaRepository<MsgBundle,Long> {
+    public MsgBundle findByMsgCd(String msgCd);
 }
