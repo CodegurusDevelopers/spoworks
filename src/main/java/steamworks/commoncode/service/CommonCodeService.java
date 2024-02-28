@@ -3,18 +3,14 @@ package steamworks.commoncode.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import steamworks.codeManage.domain.converter.CodeConverter;
-import steamworks.codeManage.domain.model.CodeModel;
-import steamworks.codeManage.domain.model.form.CreateCodeForm;
-import steamworks.codeManage.entity.Code;
 import steamworks.commoncode.domain.*;
 import steamworks.commoncode.entity.CommonCode;
 import steamworks.commoncode.entity.CommonCodeMapping;
-import steamworks.commoncode.entity.MsgBundle;
+import steamworks.commoncode.entity.MsgManage;
 import steamworks.commoncode.entity.SettingManage;
 import steamworks.commoncode.repository.CommonCodeMappingRepository;
 import steamworks.commoncode.repository.CommonCodeRepository;
-import steamworks.commoncode.repository.MsgBundleRepository;
+import steamworks.commoncode.repository.MsgManageRepository;
 import steamworks.commoncode.repository.SettingManageRepository;
 
 import java.sql.Timestamp;
@@ -27,7 +23,7 @@ public class CommonCodeService {
 
     private CommonCodeRepository commonCodeRepository;
     private CommonCodeMappingRepository commonCodeMappingRepository;
-    private MsgBundleRepository msgBundleRepository;
+    private MsgManageRepository msgManageRepository;
     private SettingManageRepository settingManageRepository;
     private List<CommonCodeModel> getCommonCodes() {
         return commonCodeRepository.findAll().stream()
@@ -136,25 +132,25 @@ public class CommonCodeService {
     }
 
 
-    public List<MsgBundleModel> findMsgBundles() {
-        List<MsgBundleModel> msgBundleModels = getMsgBundles();
-        for (MsgBundleModel model : msgBundleModels) {
+    public List<MsgManageModel> findMsgManages() {
+        List<MsgManageModel> msgManageModels = getMsgManages();
+        for (MsgManageModel model : msgManageModels) {
             CommonCode code = commonCodeRepository.findByCommCdId(model.getCommCdId());
             model.setCdNm(code.getCdNm());
         }
 
-        return msgBundleModels;
+        return msgManageModels;
     }
 
-    private List<MsgBundleModel> getMsgBundles() {
-        return msgBundleRepository.findAll().stream()
+    private List<MsgManageModel> getMsgManages() {
+        return msgManageRepository.findAll().stream()
                 .map(CommonCodeConverter::fromMsgBungle)
                 .collect(Collectors.toList());
     }
 
-    public MsgBundleModel createMsgBundle(CreateMsgBundleForm form) {
+    public MsgManageModel createMsgManage(CreateMsgManageForm form) {
 
-        MsgBundle msgBundle = MsgBundle.builder()
+        MsgManage msgManage = MsgManage.builder()
                 .msgCd(form.getMsgCd())
                 .msg(form.getMsg())
                 .msgEn(form.getMsgEn())
@@ -166,7 +162,7 @@ public class CommonCodeService {
                 .commCdId(form.getCommCdId())
                 .build();
 
-        MsgBundle bundle = msgBundleRepository.save(msgBundle);
+        MsgManage bundle = msgManageRepository.save(msgManage);
         return CommonCodeConverter.fromMsgBungle(bundle);
     }
 

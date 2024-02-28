@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class MsgBundle {
+public class MsgManage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long msgManageId;

@@ -3,8 +3,8 @@ package steamworks.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import steamworks.commoncode.entity.MsgBundle;
-import steamworks.commoncode.repository.MsgBundleRepository;
+import steamworks.msgmanage.entity.MsgManage;
+import steamworks.msgmanage.repository.MsgManageRepository;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -12,23 +12,23 @@ import java.util.Locale;
 @Configuration
 public class DatabaseMessageSource extends ReloadableResourceBundleMessageSource {
     @Autowired
-    private MsgBundleRepository msgBundleRepository;
+    private MsgManageRepository msgManageRepository;
 
     @Override
     protected MessageFormat resolveCode(String code, Locale locale) {
-        MsgBundle msgBundle = msgBundleRepository.findByMsgCd(code);
+        MsgManage msgManage = msgManageRepository.findByMsgCd(code);
 
         MessageFormat format = null;
 
-        if (msgBundle != null) {
+        if (msgManage != null) {
 
             String language = locale.getLanguage();
             if ("en".equalsIgnoreCase(language)) {
-                format = new MessageFormat(msgBundle.getMsgEn(), locale);
+                format = new MessageFormat(msgManage.getMsgEn(), locale);
             } else if ("jp".equalsIgnoreCase(language)) {
-                format = new MessageFormat(msgBundle.getMsgJp(), locale);
+                format = new MessageFormat(msgManage.getMsgJp(), locale);
             } else if ("cn".equalsIgnoreCase(language)) {
-                format = new MessageFormat(msgBundle.getMsgCn(), locale);
+                format = new MessageFormat(msgManage.getMsgCn(), locale);
             } else {
                 format = super.resolveCode(code, locale);
             }
@@ -42,19 +42,19 @@ public class DatabaseMessageSource extends ReloadableResourceBundleMessageSource
 
     @Override
     protected String resolveCodeWithoutArguments(String code, Locale locale) {
-        MsgBundle msgBundle = msgBundleRepository.findByMsgCd(code);
+        MsgManage msgManage = msgManageRepository.findByMsgCd(code);
 
         String format = null;
 
-        if (msgBundle != null) {
+        if (msgManage != null) {
 
             String language = locale.getLanguage();
             if ("en".equalsIgnoreCase(language)) {
-                format = msgBundle.getMsgEn();
+                format = msgManage.getMsgEn();
             } else if ("jp".equalsIgnoreCase(language)) {
-                format = msgBundle.getMsgJp();
+                format = msgManage.getMsgJp();
             } else if ("cn".equalsIgnoreCase(language)) {
-                format = msgBundle.getMsgCn();
+                format = msgManage.getMsgCn();
             } else {
                 format = super.resolveCodeWithoutArguments(code, locale);
             }

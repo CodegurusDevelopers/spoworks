@@ -9,6 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MsgBundleLsitListResponse {
-    List<MsgBundleModel> bundleModels;
+public class MsgManageLsitListResponse {
+    List<MsgManageModel> bundleModels;
 }

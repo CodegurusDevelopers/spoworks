@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class CreateMsgBundleForm {
+public class CreateMsgManageForm {
     @NotBlank String  msgCd;
 
     @NotBlank String msg;

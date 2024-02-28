@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MsgBundleResponse {
-    MsgBundleModel msgBundle;
+public class MsgManageResponse {
+    MsgManageModel msgManage;
 }

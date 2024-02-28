@@ -7,13 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import steamworks.codeManage.domain.model.CodeModel;
-import steamworks.codeManage.domain.model.form.CreateCodeForm;
-import steamworks.codeManage.domain.response.CodeResponse;
 import steamworks.commoncode.domain.*;
-import steamworks.commoncode.entity.MsgBundle;
-import steamworks.commoncode.entity.SettingManage;
-import steamworks.commoncode.service.CommonCodeService;
+import steamworks.commoncode.service.MsgManageService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CommonCodeController {
 
-    private CommonCodeService commonCodeService;
+    private MsgManageService commonCodeService;
 
     @GetMapping("/commoncode:LIST")
     public ResponseEntity<CommonCodeListResponse> getCodes() {
@@ -43,15 +38,15 @@ public class CommonCodeController {
     }
 
 
-    @GetMapping("/msgBundle:LIST")
-    public ResponseEntity<MsgBundleLsitListResponse> getMsgBundles() {
-        List<MsgBundleModel> codes = commonCodeService.findMsgBundles();
-        return ResponseEntity.ok(new MsgBundleLsitListResponse(codes));
+    @GetMapping("/msgManage:LIST")
+    public ResponseEntity<MsgManageLsitListResponse> getMsgManages() {
+        List<MsgManageModel> codes = commonCodeService.findMsgManages();
+        return ResponseEntity.ok(new MsgManageLsitListResponse(codes));
     }
-    @PostMapping("/msgBundle:REGISTRY")
-    public ResponseEntity<MsgBundleResponse> registryCode(@Valid @RequestBody CreateMsgBundleForm form) {
-        MsgBundleModel code = commonCodeService.createMsgBundle(form);
-        return ResponseEntity.ok(new MsgBundleResponse(code));
+    @PostMapping("/msgManage:REGISTRY")
+    public ResponseEntity<MsgManageResponse> registryCode(@Valid @RequestBody CreateMsgManageForm form) {
+        MsgManageModel code = commonCodeService.createMsgManage(form);
+        return ResponseEntity.ok(new MsgManageResponse(code));
     }
 
     @GetMapping("/settingManage:LIST")

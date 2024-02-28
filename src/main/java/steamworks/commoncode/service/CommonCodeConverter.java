@@ -2,11 +2,11 @@ package steamworks.commoncode.service;
 
 import steamworks.commoncode.domain.CommonCodeMappingModel;
 import steamworks.commoncode.domain.CommonCodeModel;
-import steamworks.commoncode.domain.MsgBundleModel;
+import steamworks.commoncode.domain.MsgManageModel;
 import steamworks.commoncode.domain.SettingManageModel;
 import steamworks.commoncode.entity.CommonCode;
 import steamworks.commoncode.entity.CommonCodeMapping;
-import steamworks.commoncode.entity.MsgBundle;
+import steamworks.commoncode.entity.MsgManage;
 import steamworks.commoncode.entity.SettingManage;
 
 public class CommonCodeConverter {
@@ -39,8 +39,8 @@ public class CommonCodeConverter {
                 .modifyDatentime(it.getModifyDatentime())
                 .build();
     }
-    static public MsgBundleModel fromMsgBungle(MsgBundle it) {
-        return MsgBundleModel.builder()
+    static public MsgManageModel fromMsgBungle(MsgManage it) {
+        return MsgManageModel.builder()
                 .msgManageId(it.getMsgManageId())
                 .msgCd(it.getMsgCd())
                 .msg(it.getMsg())

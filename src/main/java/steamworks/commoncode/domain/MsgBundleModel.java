@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Setter
 @SuperBuilder
 @ToString
-public class MsgBundleModel implements Cloneable{
+public class MsgManageModel implements Cloneable{
     Long msgManageId;
 
     String msgCd;
